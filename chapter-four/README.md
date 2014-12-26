@@ -12,19 +12,19 @@ Whenever a command returns more than one result, PowerShell will automatically w
 * [Creating New Arrays](#creating-new-arrays)
 * [Polymorphic Arrays](#polymorphic-arrays)
 * [Arrays With Only One, Or No, Element](#arrays-with-only-one-or-no-element)
-* Addressing Array Elements 
-* Choosing Several Elements from an Array 
-* Adding Elements to an Array and Removing Them 
-* Using Hash Tables 
-* Creating a New Hash Table 
-* Creating Objects From Hash Tables 
-* Using Hash tables To Calculate Properties 
-* Storing Arrays in Hash Tables 
-* Inserting New Keys in an Existing Hash Table 
-* Modifying and Removing Values 
-* Copying Arrays and Hash Tables 
-* Strongly Typed Arrays 
-* Summary 
+* [Addressing Array Elements](#addressing-array-elements)
+* [Choosing Several Elements from an Array](#choosing-several-elements-from-an-array)
+* [Adding Elements to an Array and Removing Them](#adding-elements-to-an-array-and-removing-them)
+* [Using Hash Tables](#using-hash-tables)
+* [Creating a New Hash Table](#creating-a-new-hash-table)
+* [Creating Objects From Hash Tables](#creating-objects-from-hash-tables)
+* [Using Hash tables To Calculate Properties](#using-hash-tables-to-calculate-properties)
+* [Storing Arrays in Hash Tables](#storing-arrays-in-hash-tables)
+* [Inserting New Keys in an Existing Hash Table](#inserting-new-keys-in-an-existing-hash-table)  
+* [Modifying and Removing Values](#modifying-and-removing-values)
+* [Copying Arrays and Hash Tables](#copying-arrays-and-hash-tables)
+* [Strongly Typed Arrays](#strongly-typed-arrays)
+* [Summary](#summary)
 
 
 ## PowerShell Commands Return Arrays
@@ -135,7 +135,7 @@ As such, the result of `ipconfig` was passed to _Where-Object_, which filtered o
 Dir  
 
 Directory: Microsoft.PowerShell.CoreFileSystem::C:Users  
-Tobias Weltner  
+Katie Ball
 Mode LastWriteTime Length Name  
 \---- ------------- ------ ----  
 d---- 10/01/2007 16:09 Application Data  
@@ -163,7 +163,7 @@ Every element in an array will represent a file or a directory. So if you output
 $result[4]  
 
 Directory: Microsoft.PowerShell.CoreFileSystem::C:Users  
-Tobias Weltner  
+Katie Ball
 Mode LastWriteTime Length Name  
 \---- ------------- ------ ----  
 d-r-- 04.10.2007 14:21 Desktop
@@ -184,7 +184,7 @@ PSProvider : Microsoft.PowerShell.CoreFileSystem
 PSIsContainer : True  
 Mode : d-r--  
 Name : Desktop  
-Parent : Tobias Weltner  
+Parent : Katie Ball
 Exists : True  
 Root : C:  
 FullName : C:UsersTobias WeltnerDesktop  
@@ -357,7 +357,7 @@ $list = dir $home
 $list[1,4,7,12]
 
 Directory: Microsoft.PowerShell.CoreFileSystem::C:Users  
-Tobias Weltner  
+Katie Ball
 Mode LastWriteTime Length Name  
 \---- ------------- ------ ----  
 d---- 07/26/2007 11:03 Backup  
@@ -477,14 +477,13 @@ Hash tables store `key-value pairs`. So, in hash tables you do not use a numeric
 When creating a new hash table, you can use `@{}` instead of `@()`, and specify the key-value pair that is to be stored in your new hash table. You can use semi-colons to separate key-value pairs:
 
 ```powershell
-$list = @{Name = "PC01"; IP="10.10.10.10"; User="Tobias Weltner"}
+$list = @{Name = "PC01"; IP="10.10.10.10"; User="Katie Ball"}
 
 Name Value  
 \---- -----  
 Name PC01  
 IP 10.10.10.10  
-User Tobias Weltner
-
+User Katie Ball
   
 $list["IP"]
 
@@ -519,7 +518,7 @@ $list[$list.keys]
 
 PC01  
 10.10.10.10  
-Tobias Weltner
+Katie Ball
 ```
 
 The example shows that you how to retrieve the values in the hash table using the assigned key. There are two forms of notation you can use to do this:
