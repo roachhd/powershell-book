@@ -6,9 +6,7 @@ It is time to combine commands whenever a single PowerShell command can't solve 
 **Topics Covered:**
 ## Table of Contents
 
-**[GitLab Flavored Markdown](#gitlab-flavored-markdown-gfm)**
-
-* [Personal Variables](#Personal Variables)
+* [Personal Variables](#personal-variables)
 - Selecting Variable Names 
 - Assigning and Returning Values 
 - Assigning Multiple Variable Values 
