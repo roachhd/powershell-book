@@ -241,7 +241,7 @@ World
 Tuesday, August 21, 2007 12:12:28
 ```
 
-Why is the `Get-Date` cmdlet enclosed in parentheses? Just try it without parentheses. Arrays can only store data. _Get-Date_ is a command and no data. Since you want PowerShell to evaluate the command first and then put its result into the array, you will need to use parentheses. Parentheses will identify a sub-expression and tell PowerShell to evaluate and process it first.
+>Why is the `Get-Date` cmdlet enclosed in parentheses? Just try it without parentheses. Arrays can only store data. _Get-Date_ is a command and no data. Since you want PowerShell to evaluate the command first and then put its result into the array, you will need to use parentheses. Parentheses will identify a sub-expression and tell PowerShell to evaluate and process it first.
 
 ### Arrays With Only One Or No Element
 
@@ -381,7 +381,7 @@ $array
 1
 ```
 
-Reversing the contents of an array using the approach described above is not particularly efficient because PowerShell has to store the result in a new array. Instead, you can use the special array functions of the .NET Framework (see [Chapter 6][README.md]). This will enable you to reverse the contents of an array very efficiently:
+>Reversing the contents of an array using the approach described above is not particularly efficient because PowerShell has to store the result in a new array. Instead, you can use the special array functions of the .NET Framework. *see [Chapter 6](README.md). This will enable you to reverse the contents of an array very efficiently:
 
 ```powershell
 $a = ipconfig  
@@ -714,31 +714,35 @@ Documents 10/4/2007 21:23:10
 (...)
 ```
 
-You'll learn more about format cmdlets like _Format-Table_ in the [Chapter 5][1].
+You'll learn more about format cmdlets like `Format-Table` in the [Chapter 5][1].
 
 ## Copying Arrays and Hash Tables
 
 Copying arrays or hash tables from one variable to another works, but may produce unexpected results. The reason is that arrays and hash tables are not stored directly in variables, which always store only a single value. When you work with arrays and hash tables, you are dealing with a _reference_ to the array or hash table. So, if you copy the contents of a variable to another, only the reference will be copied, not the array or the hash table. That could result in the following unexpected behavior:
 
+```powershell
 $array1 = 1,2,3  
 $array2 = $array1  
 $array2[0] = 99  
 $array1[0]
 
 99
+```
 
 Although the contents of _$array2_ were changed in this example, this affects _$array1_ as well, because they are both identical. The variables _$array1_ and _$array2_ internally reference the same storage area. Therefore, you have to create a copy if you want to copy arrays or hash tables,:
 
+```powershell
 $array1 = 1,2,3  
 $array2 = $array1.Clone()  
 $array2[0] = 99  
 $array1[0]
 
 1
+```
 
 Whenever you add new elements to an array (or a hash table) or remove existing ones, a copy action takes place automatically in the background and its results are stored in a new array or hash table. The following example clearly shows the consequences:
 
-  
+```powershell
 $array1 = 1,2,3  
 $array2 = $array1
 
@@ -750,12 +754,13 @@ $array2[0]=99
 $array1[0]
 
 1
+```
 
 ## Strongly Typed Arrays
 
 Arrays are typically polymorphic: you can store any type of value you want in any element. PowerShell automatically selects the appropriate type for each element. If you want to limit the type of data that can be stored in an array, use "strong typing" and predefine a particular type. You should specify the desired variable type in square brackets. You also specify an open and closed square bracket behind the variable type because this is an array and not a normal variable:
 
-  
+```powershell
 [int[]]$array = 1,2,3
 
   
@@ -765,19 +770,23 @@ $array += "123"
 
   
 $array += "Hello"
+```
 
-The value "Hello" cannot be converted into the type "System.Int32".  
+The value `Hello` cannot be converted into the type `System.Int32`.
+
+```powershell 
 Error: "Input string was not in a correct format."  
 At line:1 char:6  
 \+ $array <<<< += "Hello"
+```
 
-In the example, _$array_ was defined as an array of the _Integer_ type. Now, the array is able to store only whole numbers. If you try to store values in it that cannot be turned into whole numbers, an error will be reported.
+In the example, `$array` was defined as an array of the `Integer` type. Now, the array is able to store only whole numbers. If you try to store values in it that cannot be turned into whole numbers, an error will be reported.
 
 ## Summary
 
 Arrays and hash tables can store as many separate elements as you like. Arrays assign a sequential index number to elements that always begin at 0. Hash tables in contrast use a key name. That's why every element in hash tables consists of a key-value pair.
 
-You create new arrays with _@(Element1, Element2, ...)_. You can also leave out _@()_ for arrays and only use the comma operator. You create new hash tables with _@{key1=value1;key2=value2; ...)_. @{} must always be specified for hash tables. Semi-colons by themselves are not sufficient to create a new hash table.
+You create new arrays with `@(Element1, Element2, ...)`. You can also leave out `@()` for arrays and only use the comma operator. You create new hash tables with `@{key1=value1;key2=value2; ...)`. `@{}` must always be specified for hash tables. Semi-colons by themselves are not sufficient to create a new hash table.
 
 You can address single elements of an array or hash able by using square brackets. Specify either the index number (for arrays) or the key (for hash tables) of the desired element in the square brackets. Using this approach you can select and retrieve several elements at the same time.
 
