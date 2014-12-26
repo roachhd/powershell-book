@@ -558,7 +558,7 @@ You can now use your hash table to add the calculated property to objects:
 
 Note: Because of a PowerShell bug, this will only work when you create the hash table with initial values like in the example above. It will not work when you first create an empty hash table and then add the key-value pairs in a second step.
 
-Hash tables can control even more aspects when using them in conjunction with the family of _Format-*_ cmdlets. For example, if you use _Format-Table_, you can then pass it a hash table with formatting details:
+Hash tables can control even more aspects when using them in conjunction with the family of _Format-*_ cmdlets. For example, if you use `Format-Table`, you can then pass it a hash table with formatting details:
 
 * **Expression:** The name of object property to be displayed in this column
 * **Width:** Character width of the column
@@ -615,7 +615,7 @@ You can store classic array inside of hash tables, too. This is possible because
 If you'd like to insert new key-value pairs in an existing hash table, you can just specify the new key and the value that is to be assigned to the new key. Again, you can choose between the square brackets and dot notations.
 
     # Create a new hash table with key-value pairs
-    $list = @{Name = "PC01"; IP="10.10.10.10"; User="Tobias Weltner"}
+    $list = @{Name = "PC01"; IP="10.10.10.10"; User="Katie Ball"}
 
     # Insert two new key-value pairs in the list (two different notations are possible):
     $list.Date = Get-Date
@@ -629,7 +629,7 @@ If you'd like to insert new key-value pairs in an existing hash table, you can j
     Location                       Hanover
     Date                           08/21/2007 13:00:18
     IP                             10.10.10.10
-    User                           Tobias Weltner
+    User                           Katie Ball
 
 You can create empty hash tables and then insert keys as needed because it's easy to insert new keys in an existing hash table:
 
@@ -655,7 +655,7 @@ Name PC01
 Location New York  
 Date 08/20/2007 13:10:12  
 IP 10.10.10.10  
-User Tobias Weltner
+User Katie Ball
 ```
 
 If you'd like to completely remove a key from the hash table, use _Remove()_ and as an argument specify the key that you want to remove:
@@ -682,7 +682,7 @@ Every column is defined with its own hash table. In the hash table, values are a
 * **Label:** Column heading
 * **Alignment:** Right or left justification of the column
 
-All you need to do is to pass your format definitions to _Format-Table_ to ensure that your listing shows just the name and date of the last modification in two columns:
+All you need to do is to pass your format definitions to `Format-Table` to ensure that your listing shows just the name and date of the last modification in two columns:
 
 ```powershell
 $column1 = @{expression="Name"; width=30; `  
