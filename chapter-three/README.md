@@ -4,8 +4,11 @@
 It is time to combine commands whenever a single PowerShell command can't solve your problem. One way of doing this is by using variables. PowerShell can store results of one command in a variable and then pass the variable to another command. In this chapter, we'll explain what variables are and how you can use them to solve more complex problems.
 
 **Topics Covered:**
+## Table of Contents
 
-- Personal Variables 
+**[GitLab Flavored Markdown](#gitlab-flavored-markdown-gfm)**
+
+* [Personal Variables](#Personal Variables)
 - Selecting Variable Names 
 - Assigning and Returning Values 
 - Assigning Multiple Variable Values 
