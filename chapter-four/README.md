@@ -5,13 +5,13 @@ Whenever a command returns more than one result, PowerShell will automatically w
 
 **Topics Covered:**
 
-* PowerShell-Commands-Returns-Arrays 
-* [Discovering Arrays](discovering-arrays)
-* [Processing Array Elements in a Pipeline](processing-array-elements-in-a-pipeline)
-* Working with Real Objects 
-* Creating New Arrays 
-* Polymorphic Arrays 
-* Arrays With Only One (Or No) Element 
+* [PowerShell Commands Returns Arrays](#powershell-commands-returns-arrays) 
+* [Discovering Arrays](#discovering-arrays)
+* [Processing Array Elements in a Pipeline](#processing-array-elements-in-a-pipeline)
+* [Working with Real Objects](working-with-real-objects)
+* [Creating New Arrays](#creating-new-arrays)
+* [Polymorphic Arrays](#polymorphic-arrays)
+* [Arrays With Only One, Or No, Element](#arrays-with-only-one-or-no-element)
 * Addressing Array Elements 
 * Choosing Several Elements from an Array 
 * Adding Elements to an Array and Removing Them 
@@ -31,6 +31,7 @@ Whenever a command returns more than one result, PowerShell will automatically w
 
 If you store the result of a command in a variable and then output it, you might at first think that the variable contains plain text:
 
+```powershell
 $a = ipconfig  
 $a
 
@@ -46,6 +47,7 @@ Connection location IPv6 Address . : fe80::6093:8889:257e:8d1%8
 IPv4 address . . . . . . . . . . . : 192.168.1.35  
 Subnet Mask . . . . . . . . . . . . : 255.255.255.0  
 Standard Gateway . . . . . . . . . . : 192.168.1.1
+```
 
 In reality, the result consists of a number of pieces of data, and PowerShell returns them as an array. This occurs automatically whenever a command returns more than a single piece of data.
 
@@ -53,6 +55,7 @@ In reality, the result consists of a number of pieces of data, and PowerShell re
 
 You can check the data type to find out whether a command will return an array:
 
+```powershell
 $a = "Hello"  
 $a -is [Array]
 
@@ -68,16 +71,19 @@ An array will always supports the property _Count_, which will return the number
 $a.Count
 
 53
+```
 
-Here, the _ipconfig_ command returned 53 single results that were all stored in _$a_. If you'd like to examine a single array element, you can specify its index number. If an array has 53 elements, then its valid index numbers are 0 to 52 (the index always starts at 0).
+Here, the `ipconfig` command returned 53 single results that were all stored in `$a`. If you'd like to examine a single array element, you can specify its index number. If an array has 53 elements, then its valid index numbers are 0 to 52 (the index always starts at 0).
 
-  
+```powershell
 $a[1]
+```
 
 Windows IP Configuration
 
 It is important to understand just when PowerShell will use arrays. If a command returns just one result, it will happily return that exact result to you. Only when a command returns more than one result will it wrap them in an array.
 
+```powershell
 $result = Dir  
 $result -is [array]
 
@@ -87,23 +93,28 @@ $result = Dir C:autoexec.bat
 $result -is [array]
 
 False
+```
 
 Of course, this will make writing scripts difficult because sometimes you cannot predict whether a command will return one, none, or many results. That's why you can make PowerShell return any result as an array.
 
-Use _@()_ if you'd like to force a command to always return its result in an array. This way you find out the number of files in a folder:
+Use `@()` if you'd like to force a command to always return its result in an array. This way you find out the number of files in a folder:
 
+```powershell 
 $result = @(Dir $env:windir -ea 0)  
 $result.Count
+```
 
 Or in a line:
 
+```powershell
 $result = @(Dir $env:windir -ea 0).Count
+```
 
 ### Processing Array Elements in a Pipeline
 
-_Ipconfig_ will return each line of text as an array element. This is great since all the text lines are individual array elements, allowing you to process them individually in a pipeline. For example, you can filter out unwanted text lines:
+`Ipconfig` will return each line of text as an array element. This is great since all the text lines are individual array elements, allowing you to process them individually in a pipeline. For example, you can filter out unwanted text lines:
 
-  
+```powershell
 $result = ipconfig  
 $result | Where-Object { $_ -like "*Address*"  
 
@@ -112,13 +123,15 @@ IPv4 address . . . . . . . . . . . : 192.168.1.35
 Connection location IPv6 Address . : fe80::5efe:192.168.1.35%16
 
 Connection location IPv6 Address . . . : fe80::14ab:a532:a7b9:cd3a%11
+```
 
-As such, the result of _ipconfig_ was passed to _Where-Object_, which filtered out all text lines that did not contain the keyword you were seeking. With minimal effort, you can now reduce the results of _ipconfig_ to the information you deem relevant.
+As such, the result of `ipconfig` was passed to _Where-Object_, which filtered out all text lines that did not contain the keyword you were seeking. With minimal effort, you can now reduce the results of _ipconfig_ to the information you deem relevant.
 
 ### Working with Real Objects
 
-_Ipconfig_ is a legacy command, not a PowerShell cmdlet. While it is a command that will return individual information stored in arrays, this individual information will consist of plain text. Real PowerShell cmdlets will return rich objects, not text, even though the results will appear as plain text:
+`Ipconfig` is a legacy command, not a PowerShell cmdlet. While it is a command that will return individual information stored in arrays, this individual information will consist of plain text. Real PowerShell cmdlets will return rich objects, not text, even though the results will appear as plain text:
 
+```powershell
 Dir  
 
 Directory: Microsoft.PowerShell.CoreFileSystem::C:Users  
@@ -133,17 +146,20 @@ d-r-- 10/04/2007 14:21 Desktop
 d-r-- 10/04/2007 21:23 Documents  
 d-r-- 10/09/2007 12:21 Downloads  
 (...)
+```
 
 Let's check if the return value is an array:
 
+```powershell
 $result = Dir  
 $result.Count
 
 82
+```
 
 Every element in an array will represent a file or a directory. So if you output an element from the array to the console, PowerShell will automatically convert the object into text:
 
-  
+```powershell 
 $result[4]  
 
 Directory: Microsoft.PowerShell.CoreFileSystem::C:Users  
@@ -151,10 +167,11 @@ Tobias Weltner
 Mode LastWriteTime Length Name  
 \---- ------------- ------ ----  
 d-r-- 04.10.2007 14:21 Desktop
+```
 
 In reality, each element returned by _Dir_ (_Get-Childitem_) is really an object with a number of individual properties. Some of these properties surfaced in the previous example as column headers (like Mode, LastWriteTime, Length, and Name). The majority of properties did not show up, though. To see all object properties, you can pipe them on to _Select-Object_ and specify an "*" to show all properties. PowerShell will now output them as list rather than table since the console is too narrow to show them all
 
-  
+```powershell
 $result[4] | Format-List *
 
 PSPath : Microsoft.PowerShell.CoreFileSystem::  
@@ -179,6 +196,7 @@ LastAccessTimeUtc : 10/04/2007 12:21:20
 LastWriteTime : 10/04/2007 14:21:20  
 LastWriteTimeUtc : 10/04/2007 12:21:20  
 Attributes : ReadOnly, Directory
+```
 
 You'll learn more about these types of objects in [Chapter 5][1].
 
