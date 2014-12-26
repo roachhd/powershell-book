@@ -5,32 +5,66 @@ It is time to combine commands whenever a single PowerShell command can't solve 
 
 **Topics Covered:**
 
+- Personal Variables 
+- Selecting Variable Names 
+- Assigning and Returning Values 
+- Assigning Multiple Variable Values 
+- Exchanging the Contents of Variables 
+- Assigning Different Values to Several Variables 
+- Listing Variables 
+- Finding Variables 
+- Verify Whether a Variable Exists 
+- Deleting Variables 
+- Using Special Variable Cmdlets 
+- Write-Protecting Variables: Creating Constants 
+- Variables with Description 
+- "Automatic" PowerShell Variables 
+- Environment Variables 
+- Reading Environment Variables 
+- Searching for Environment Variables 
+- Modifying Environment Variables 
+- Permanent Modifications of Environment Variables 
+- Scope of Variables 
+- Automatic Restriction 
+- Changing Variable Visibility 
+- Setting Scope 
+- Variable Type and "Strongly Typing" 
+- Strongly Typing 
+- The Advantages of Specialized Types 
+- Variable Management: Behind the Scenes 
+- Modification of Variable Options 
+- Write Protecting Variables 
+- Examining Strongly Typed Variables 
+- Validating Variable Contents 
+- Summary 
+
+
 ## Personal Variables
 
 Variables store pieces of information. This way, you can first gather all the information you may need and store them in variables. The following example stores two pieces of information in variables and then calculates a new result:
 
-  
+```powershell
 $amount = 120  
 $VAT = 0.19
-
   
 $result = $amount * $VAT
-
   
 $result
 
 22.8
-
   
 $text = "Net amount $amount matches gross amount $result"  
 $text
+```
 
 Net amount 120 matches gross amount 142.8
 
 Of course, you can have hard-coded the numbers you multiplied. However, variables are the prerequisite for reusable code. By assigning your data to variables, you can easily change the information, either by manually assigning different values to your variables or by assigning user-defined values to your variables. By simply replacing the first two lines, your script can interactively ask for the variable content:
 
+```powershell
 [Int]$amount = "Enter amount of money"  
 [Double]$VAT = "Enter VAT rate"  
+```
 
 Note that I strongly-typed the variables in this example. You will hear more about variable typing later in that character , but whenever you use Read-Host or another method that accepts user input, you have to specify the variable data type or else PowerShell will treat your input as simple string. Simple text is something very different from numbers and you cannot calculate with pieces of text.
 
@@ -44,16 +78,18 @@ You are free to call the variable anything you like – as long as the name is n
 
 There are some special characters that have special meaning to PowerShell. If you used those in your variable names, PowerShell can get confused. So the best thing is to first avoid special characters in your variable names. But if you must use them for any reason, be sure to enclose the variable name in brackets:
 
+```powershell
 ${#this is a strange variable name} = 12  
 ${#this is a strange variable name}
 
 12
+```
 
 ### Assigning and Returning Values
 
 The assignment operator "=" assigns a value to a variable. You can assign almost anything to a variable, even complete command results:
 
-  
+```powershell
 $listing = Get-ChildItem c:  
 $listing  
 
@@ -86,12 +122,14 @@ Media state
 
 . . . . . . . . . . . : Medium disconnected  
 Connection-specific DNS Suffix:
+```
+
 
 ### Assigning Multiple Variable Values
 
 If you'd like, you can use the assignment operator to assign values to multiple variables at the same time:
 
-  
+```powershell
 $a = $b = $c = 1  
 $a
 
@@ -103,44 +141,51 @@ $b
 
 $c
 
-1
+1```
 
 ### Exchanging the Contents of Variables
 
 Now and then you might want to exchange the contents of two variables. In traditional programming languages, that would require several steps:
 
+```powershell
 $Value1 = 10  
 $Value2 = 20  
 $Temp = $Value1  
 $Value1 = $Value2  
 $Value2 = $Temp
+```
 
 With PowerShell, swapping variable content is much easier because you can assign multiple values to multiple variables. Have a look:
 
-  
+```powershell
 $Value1 = 10; $Value2 = 20  
 $Value1, $Value2 = $Value2, $Value1
+```
 
 ### Assigning Different Values to Several Variables
 
 When you swap variable content like in the past example, it is possible because of arrays. The comma is used to create arrays, which are basically a list of values. If you assign one list of values to another list of values, PowerShell can assign multiple values at the same time. Have a look:
 
-  
+```powershell
 $Value1, $Value2 = 10,20  
 $Value1, $Value2 = $Value2, $Value1
+```
 
 ### Listing Variables
 
 PowerShell keeps a record of all variables, which is accessible via a virtual drive called _variable:_. Here is how you see all currently defined variables:
 
+```powershell
 Dir variable:
+```
 
 Aside from your own personal variables, you'll see many more. PowerShell also defines variables and calls them "automatic variables." You'll learn more about this soon.
 
 ### Finding Variables
 
-Using the _variable:_ virtual drive can help you find variables. If you'd like to see all the variables containing the word "Maximum," try this:
+Using the `_variable:_` virtual drive can help you find variables. If you'd like to see all the variables containing the word `Maximum` try this:
 
+```powershell
 Dir variable:*maximum*
 
 Name                   Value  
@@ -151,19 +196,22 @@ MaximumFunctionCount   4096
 MaximumAliasCount      4096  
 MaximumDriveCount      4096  
 MaximumHistoryCount    1000  
+```
 
 The solution isn't quite so simple if you'd like to know which variables currently contain the value 20. It consists of several commands piped together.
 
+```powershell
 dir variable: | Out-String -stream | Select-String " 20 "
 
 value2 20  
 $ 20
+```
 
 Here, the output from _Dir_ is passed on to _Out-String_, which converts the results of _Dir_ into string. The parameter _-Stream_ ensures that every variable supplied by _Dir_ is separately output as string. _Select-String_ selects the lines that include the desired value, filtering out the rest. White space is added before and after the number 20 to ensure that only the desired value is found and not other values that contain the number 20 (like 200).
 
 ### Verify Whether a Variable Exists
 
-Using the cmdlet _Test-Path_, you can verify whether a certain file exists. Similar to files, variables are stored in their own "drive" called _variable:_ and every variable has a path name that you can verify with _Test-Path_. You can use this technique to find out whether you are running PowerShell v1 or v2:
+Using the cmdlet `_Test-Path_`, you can verify whether a certain file exists. Similar to files, variables are stored in their own "drive" called _variable:_ and every variable has a path name that you can verify with _Test-Path_. You can use this technique to find out whether you are running PowerShell v1 or v2:
 
   
 Test-Path variable:psversiontable
@@ -183,7 +231,7 @@ False
 
 PowerShell will keep track of variable use and remove variables that are no longer used so there is no need for you to remove variables manually. If you'd like to delete a variable immediately, again, do exactly as you would in the file system:
 
-  
+```powershell
 $test = 1
 
   
@@ -194,6 +242,7 @@ del variable:test
 
   
 Dir variable:te*
+```
 
 ### Using Special Variable Cmdlets
 
