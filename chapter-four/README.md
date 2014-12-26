@@ -169,15 +169,15 @@ Mode LastWriteTime Length Name
 d-r-- 04.10.2007 14:21 Desktop
 ```
 
-In reality, each element returned by _Dir_ (_Get-Childitem_) is really an object with a number of individual properties. Some of these properties surfaced in the previous example as column headers (like Mode, LastWriteTime, Length, and Name). The majority of properties did not show up, though. To see all object properties, you can pipe them on to _Select-Object_ and specify an "*" to show all properties. PowerShell will now output them as list rather than table since the console is too narrow to show them all
+In reality, each element returned by `Dir` (`Get-Childitem`) is really an object with a number of individual properties. Some of these properties surfaced in the previous example as column headers (like Mode, LastWriteTime, Length, and Name). The majority of properties did not show up, though. To see all object properties, you can pipe them on to `Select-Object` and specify an "*" to show all properties. PowerShell will now output them as list rather than table since the console is too narrow to show them all
 
 ```powershell
 $result[4] | Format-List *
 
 PSPath : Microsoft.PowerShell.CoreFileSystem::  
-C:UsersTobias WeltnerDesktop  
+C:UsersKatie BallDedktop  
 PSParentPath : Microsoft.PowerShell.CoreFileSystem::  
-C:UsersTobias Weltner  
+C:UsersKatie Ball  
 PSChildName : Desktop  
 PSDrive : C  
 PSProvider : Microsoft.PowerShell.CoreFileSystem  
@@ -187,7 +187,7 @@ Name : Desktop
 Parent : Katie Ball
 Exists : True  
 Root : C:  
-FullName : C:UsersTobias WeltnerDesktop  
+FullName : C:UsersKatie BsllDesktop  
 Extension :  
 CreationTime : 04/13/2007 01:54:53  
 CreationTimeUtc : 04/12/2007 23:54:53  
