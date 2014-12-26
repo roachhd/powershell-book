@@ -5,7 +5,7 @@ Whenever a command returns more than one result, PowerShell will automatically w
 
 **Topics Covered:**
 
-* [PowerShell Commands Returns Arrays](#powershell-commands-returns-arrays) 
+* [PowerShell Commands Return Arrays](#powershell-commands-return-arrays) 
 * [Discovering Arrays](#discovering-arrays)
 * [Processing Array Elements in a Pipeline](#processing-array-elements-in-a-pipeline)
 * [Working with Real Objects](working-with-real-objects)
@@ -198,12 +198,13 @@ LastWriteTimeUtc : 10/04/2007 12:21:20
 Attributes : ReadOnly, Directory
 ```
 
-You'll learn more about these types of objects in [Chapter 5][1].
+You'll learn more about these types of objects in [Chapter 5][README.md].
 
 ## Creating New Arrays
 
 You can easily create your own arrays. Simply use a comma to place elements into an array:
 
+```powershell
 $array = 1,2,3,4  
 $array
 
@@ -211,9 +212,11 @@ $array
 2  
 3  
 4
+```
 
 There's even a shortcut for number ranges:
 
+```powershell 
 $array = 1..4  
 $array
 
@@ -221,11 +224,13 @@ $array
 2  
 3  
 4
+```
 
 ### Polymorphic Arrays
 
 Just like variables, individual elements of an array can store any type of value you assign. This way, you can store whatever you want in an array, even a mixture of different data types. Again, you can separate the elements by using commas:
 
+```powershell 
 $array = "Hello", "World", 1, 2, (Get-Date)  
 $array
 
@@ -234,20 +239,24 @@ World
 1  
 2  
 Tuesday, August 21, 2007 12:12:28
+```
 
-Why is the _Get-Date_ cmdlet enclosed in parentheses? Just try it without parentheses. Arrays can only store data. _Get-Date_ is a command and no data. Since you want PowerShell to evaluate the command first and then put its result into the array, you will need to use parentheses. Parentheses will identify a sub-expression and tell PowerShell to evaluate and process it first.
+Why is the `Get-Date` cmdlet enclosed in parentheses? Just try it without parentheses. Arrays can only store data. _Get-Date_ is a command and no data. Since you want PowerShell to evaluate the command first and then put its result into the array, you will need to use parentheses. Parentheses will identify a sub-expression and tell PowerShell to evaluate and process it first.
 
-### Arrays With Only One (Or No) Element
+### Arrays With Only One Or No Element
 
 How do you create arrays with just one single element? Here's how:
 
+```powershell
 $array = ,1  
 $array.Length
 
 1
+```
 
 You'll need to use the construct _@(...)_to create an array without any elements at all:
 
+```powershell
 $array = @()  
 $array.Length
 
@@ -265,20 +274,24 @@ $array
 2  
 3  
 Hello
+```
 
 Why would you want to create an empty array in the first place? Because you can add elements to it like this when you start with an empty array:
 
+```powershell
 $array = @()  
 $array += 1  
 $array += 3  
 
 1  
 3  
+```
 
 ## Addressing Array Elements
 
 Every element in an array is addressed using its index number. You will find that negative index numbers count from last to first. You can also use expressions that calculate the index value:
 
+```powershell 
 -5
 
   
@@ -298,11 +311,13 @@ $array[$array.length-1]
 (-5..12)[2]
 
 -3
+```
 
-Remember, the first element in your array will always have the index number 0. The index _-1_ will always give you the _last_ element in an array. The example demonstrates that the total number of all elements will be returned in two properties: _Count_ and _Length_. Both of these properties will behave identically.
+Remember, the first element in your array will always have the index number 0. The index `-1` will always give you the `last` element in an array. The example demonstrates that the total number of all elements will be returned in two properties: `Count` and `Length`. Both of these properties will behave identically.
 
-Here is a real-world example using arrays and accessing individual elements. First, assume you have a path and want to access only the file name. Every string object has a built-in method called _Split()_ that can split the text into chunks. All you will need to do is submit the split character that is used to separate the chunks:
+Here is a real-world example using arrays and accessing individual elements. First, assume you have a path and want to access only the file name. Every string object has a built-in method called `Split()` that can split the text into chunks. All you will need to do is submit the split character that is used to separate the chunks:
 
+```powershell
 PS > $path = "c:foldersubfolderfile.txt"
 
 PS > $array = $path.Split('')
@@ -313,24 +328,29 @@ c:
 folder   
 subfolder   
 file.txt
+```
 
 As you see, by splitting a path at the backslash, you will get its components. The file name is always the last element of that array. So to access the filename, you will access the last array element:
 
+```powershell
 PS > $array[-1]
 
 file.txt
+```
 
-Likewise, if you are interested in the file name extension, you can change the split character and use "." instead:
+Likewise, if you are interested in the file name extension, you can change the split character and use `.` instead:
 
+```powershell 
 PS > $path.Split('.')[-1]
 
 txt
+```
 
 ### Choosing Several Elements from an Array
 
 You can also access more than one array element at once by specifying multiple index numbers. The result is a new array that contains the subset that you picked from the original array:
 
-  
+```powershell
 $list = dir $home
 
   
@@ -344,10 +364,11 @@ d---- 07/26/2007 11:03 Backup
 d-r-- 08/20/2007 07:52 Desktop  
 d-r-- 08/12/2007 10:21 Favorites  
 d-r-- 04/13/2007 01:55 Saved Games
+```
 
 The second line will select the second, fifth, eighth, and thirteenth elements (remember that the index begins at 0). You can use this approach to reverse the contents of an array:
 
-  
+```powershell
 $array = 1..10
 
   
@@ -358,22 +379,24 @@ $array
 9  
 ...  
 1
+```
 
-Reversing the contents of an array using the approach described above is not particularly efficient because PowerShell has to store the result in a new array. Instead, you can use the special array functions of the .NET Framework (see [Chapter 6][2]). This will enable you to reverse the contents of an array very efficiently:
+Reversing the contents of an array using the approach described above is not particularly efficient because PowerShell has to store the result in a new array. Instead, you can use the special array functions of the .NET Framework (see [Chapter 6][README.md]). This will enable you to reverse the contents of an array very efficiently:
 
-  
+```powershell
 $a = ipconfig  
 $a
 
   
 [array]::Reverse($a)  
 $a
+```
 
 ### Adding Elements to an Array and Removing Them
 
-Arrays will always contain a fixed number of elements. You'll have to make a new copy of the array with a new size to add or remove elements later. You can simply use the "+=" operator to do that and then add new elements to an existing array:
+Arrays will always contain a fixed number of elements. You'll have to make a new copy of the array with a new size to add or remove elements later. You can simply use the `+=` operator to do that and then add new elements to an existing array:
 
-  
+```powershell
 $array += "New Value"  
 $array
 
@@ -381,16 +404,20 @@ $array
 2  
 3  
 New Value
+```
 
 You will find that array sizes can't be modified so PowerShell will work behind the scenes to create a brand-new, larger array, copying the contents of the old array into it, and adding the new element. PowerShell will work exactly the same way when you want to delete elements from an array. Here, too, the original array is copied to a new, smaller array while disposing of the old array. For example, the next line will remove elements 4 and 5 using the indexes 3 and 4:
 
+```powershell
 $array = $array[0..2] + $array[5..10]  
 $array.Count
 
 9
+```
 
 As you can imagine, creating new arrays to add or remove array elements is a slow and expensive approach and is only useful for occasional array manipulations. A much more efficient way is to convert an array to an ArrayList object, which is a specialized array. You can use it as a replacement for regular arrays and benefit from the added functionality, which makes it easy to add, remove, insert or even sort array contents:
 
+```powershell
 PS > $array = 1..10  
 PS > $superarray = [System.Collections.ArrayList]$array  
 PS > $superarray.Add(11) | Out-Null  
@@ -439,16 +466,17 @@ PS > $superarray
 3  
 2  
 1
+```
 
 ## Using Hash Tables
 
-Hash tables store "key-value pairs." So, in hash tables you do not use a numeric index to address individual elements, but rather the key you assigned to a value.
+Hash tables store `key-value pairs`. So, in hash tables you do not use a numeric index to address individual elements, but rather the key you assigned to a value.
 
 ### Creating a New Hash Table
 
-When creating a new hash table, you can use _@{}_ instead of _@()_, and specify the key-value pair that is to be stored in your new hash table. You can use semi-colons to separate key-value pairs:
+When creating a new hash table, you can use `@{}` instead of `@()`, and specify the key-value pair that is to be stored in your new hash table. You can use semi-colons to separate key-value pairs:
 
-  
+```powershell
 $list = @{Name = "PC01"; IP="10.10.10.10"; User="Tobias Weltner"}
 
 Name Value  
@@ -492,6 +520,7 @@ $list[$list.keys]
 PC01  
 10.10.10.10  
 Tobias Weltner
+```
 
 The example shows that you how to retrieve the values in the hash table using the assigned key. There are two forms of notation you can use to do this:
 
@@ -504,6 +533,7 @@ The square brackets can return several values at the same time exactly like arra
 
 One area where hash tables are used is when you want to return text results into real objects. First, create a hash table and then convert this into an object. Let's say you want to combine information you retrieved from different sources into one consolidated result object. Here is how you can do this:
 
+```powershell
     PS> $info = @{}
     PS> $info.BIOSVersion = Get-WmiObject Win32_BIOS | Select-Object -ExpandProperty Version
     PS> $info.OperatingSystemVersion = Get-WmiObject win32_OperatingSystem | Select
@@ -514,6 +544,7 @@ One area where hash tables are used is when you want to return text results into
     OperatingSystemVersion     BIOSVersion                PowerShellVersion
     ----------------------     -----------                -----------------
     6.1.7600                   SECCSD - 6040000           2.0
+```
 
 ### Using Hash Tables to Calculate Properties
 
@@ -615,7 +646,7 @@ You can create empty hash tables and then insert keys as needed because it's eas
 
 If all you want to do is to change the value of an existing key in your hash table, just overwrite the value:
 
-  
+```powershell
 $list["Date"] = (Get-Date).AddDays(-1)  
 $list.Location = "New York"
 
@@ -626,20 +657,24 @@ Location New York
 Date 08/20/2007 13:10:12  
 IP 10.10.10.10  
 User Tobias Weltner
+```
 
 If you'd like to completely remove a key from the hash table, use _Remove()_ and as an argument specify the key that you want to remove:
 
+```powershell
 $list.remove("Date")
+```
 
 ### Using Hash Tables for Output Formatting
 
-An interesting use for hash tables is to format text. Normally, PowerShell outputs the result of most commands as a table and internally uses the cmdlet _Format-Table_:
+An interesting use for hash tables is to format text. Normally, PowerShell outputs the result of most commands as a table and internally uses the cmdlet `Format-Table`:
 
-  
+```powershell
 Dir  
 Dir | Format-Table
+```
 
-If you use _Format-Table_, you can pass it a hash table with formatting specifications. This enables you to control how the result of the command is formatted.
+If you use `Format-Table`, you can pass it a hash table with formatting specifications. This enables you to control how the result of the command is formatted.
 
 Every column is defined with its own hash table. In the hash table, values are assigned to the following four keys:
 
@@ -650,7 +685,7 @@ Every column is defined with its own hash table. In the hash table, values are a
 
 All you need to do is to pass your format definitions to _Format-Table_ to ensure that your listing shows just the name and date of the last modification in two columns:
 
-  
+```powershell
 $column1 = @{expression="Name"; width=30; `  
 label="filename"; alignment="left"}  
 $column2 = @{expression="LastWriteTime"; width=40; `  
@@ -678,6 +713,7 @@ Debug 06/28/2007 18:33:29
 Desktop 10/4/2007 14:21:20  
 Documents 10/4/2007 21:23:10  
 (...)
+```
 
 You'll learn more about format cmdlets like _Format-Table_ in the [Chapter 5][1].
 
