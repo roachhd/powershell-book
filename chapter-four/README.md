@@ -5,9 +5,9 @@ Whenever a command returns more than one result, PowerShell will automatically w
 
 **Topics Covered:**
 
-* PowerShell Commands Returns Arrays 
-* Discovering Arrays 
-* Processing Array Elements in a Pipeline 
+* PowerShell-Commands-Returns-Arrays 
+* [Discovering Arrays](discovering-arrays)
+* [Processing Array Elements in a Pipeline](processing-array-elements-in-a-pipeline)
 * Working with Real Objects 
 * Creating New Arrays 
 * Polymorphic Arrays 
